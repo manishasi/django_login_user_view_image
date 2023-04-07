@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Upload</button>
+    </form>
+      <div class="row">
+        {% for x in data %}
+        <div class="col-md-4">
+          <div class="thumbnail">
+            <a href="{{ x.photo.url }}">
+              <img src="{{ x.photo.url }}" alt="Lights" style="width: 20%" />
+              <div class="caption">
+                <p>{{ x.title }}</p>
+                {% comment %} <form method="POST" action="{% url 'like_image' x.id %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="like" value="{{ x.id }}">
+                  <button type="submit" class="btn btn-primary">Like ({{ x.likes }})</button>
+                </form>
+                <form method="POST" action="{% url 'dislike_image' x.id %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="dislike" value="{{ x.id }}">
+                  <button type="submit" class="btn btn-secondary">Dislike ({{ x.dislikes }})</button>
+                  {% comment %} <button type="submit" class="btn btn-secondary">Dislike ({{ x.dislikes }}) {% endcomment %}
+                  {% comment %} </button>
+                </form>
+              </div> {% endcomment %}
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+  </body>
+</html>
